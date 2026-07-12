@@ -1,0 +1,75 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+db.sqlite3
+media/
+staticfiles/
+
+# .NET / Visual Studio
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+coverage*.xml
+
+# Flutter / Dart / Android
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+android/.gradle/
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+
+# VS Code (shared configuration is tracked)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.key
+secrets/
+
+# Logs, local tools and generated data
+*.log
+logs/
+.tools/
+tools/
+tmp/
+temp/
+/logiflow-code.txt
+/logiflow.txt
+/scripts/export-code-to-txt.ps1
+infrastructure/postgres/data/
+infrastructure/sqlserver/data/
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# IDE and OS miscellany
+.idea/
+.DS_Store
