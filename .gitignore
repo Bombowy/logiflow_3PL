@@ -60,7 +60,7 @@ tmp/
 temp/
 /logiflow-code.txt
 /logiflow.txt
-/scripts/export-code-to-txt.ps1
+/artifacts/local/
 infrastructure/postgres/data/
 infrastructure/sqlserver/data/
 

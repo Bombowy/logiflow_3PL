@@ -13,26 +13,37 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 
 import environ
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-REPOSITORY_ROOT = BASE_DIR.parent.parent
 
 env = environ.Env(
     DJANGO_ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
-    DJANGO_DEBUG=(bool, False),
+    DJANGO_DEBUG=(bool, True),
 )
-environ.Env.read_env(REPOSITORY_ROOT / ".env")
+environ.Env.read_env(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY", default="unsafe-local-development-key")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG")
+
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="")
+unsafe_secret_keys = {
+    "",
+    "change-me-for-local-development-only",
+    "unsafe-local-development-key",
+}
+if not DEBUG and SECRET_KEY in unsafe_secret_keys:
+    raise ImproperlyConfigured(
+        "A secure DJANGO_SECRET_KEY is required when DJANGO_DEBUG=false."
+    )
+if not SECRET_KEY:
+    SECRET_KEY = "unsafe-local-development-key"
 
 ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
 
@@ -46,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +75,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,12 +93,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+database_url = env("DATABASE_URL", default="")
+if database_url:
+    DATABASES = {'default': env.db_url_config(database_url)}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 # Password validation
@@ -123,4 +139,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']

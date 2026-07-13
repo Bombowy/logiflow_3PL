@@ -4,6 +4,5 @@
   "python.testing.pytestArgs": [
     "backend/django-platform"
   ],
-  "editor.formatOnSave": true,
-  "files.eol": "\r\n"
+  "editor.formatOnSave": true
 }

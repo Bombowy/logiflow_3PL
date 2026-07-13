@@ -1,17 +1,21 @@
-# logiflow_warehouse
+# LogiFlow Warehouse
 
-Mobile warehouse scanner for LogiFlow 3PL
+LogiFlow Warehouse is a thin mobile client for warehouse employees in the LogiFlow 3PL demonstration system. The application currently contains only a static welcome screen.
 
-## Getting Started
+Barcode scanning and warehouse operations are planned for future stages. The application will communicate with the public API over REST/HTTPS and will not connect directly to PostgreSQL, SQL Server, or other databases.
 
-This project is a starting point for a Flutter application.
+## Requirements
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter Stable
+- Android SDK
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Development
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Run from `mobile/warehouse-app`:
+
+```powershell
+flutter pub get
+flutter analyze
+flutter test
+flutter run
+```

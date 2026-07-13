@@ -1,6 +1,11 @@
 @LogiFlow.Integration.Api_HostAddress = http://localhost:5109
 
-GET {{LogiFlow.Integration.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{LogiFlow.Integration.Api_HostAddress}}/health/live
 
 ###
+
+GET {{LogiFlow.Integration.Api_HostAddress}}/health/ready
+
+###
+
+GET {{LogiFlow.Integration.Api_HostAddress}}/openapi/v1.json
