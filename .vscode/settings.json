@@ -1,5 +1,4 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/django-platform/.venv/Scripts/python.exe",
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": [
     "backend/django-platform"

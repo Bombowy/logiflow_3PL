@@ -1,9 +1,11 @@
 import os
 import subprocess
 import sys
+from unittest.mock import patch
 
 from django.conf import settings
-from django.test import SimpleTestCase
+from django.db.utils import DatabaseError
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
 
@@ -16,6 +18,39 @@ class HealthEndpointTests(SimpleTestCase):
             response.json(),
             {"status": "healthy", "service": "django-platform"},
         )
+
+
+class ReadinessEndpointTests(TestCase):
+    def test_readiness_returns_exact_response_when_database_is_available(self):
+        response = self.client.get(reverse("core:readiness"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "status": "ready",
+                "service": "django-platform",
+                "database": "available",
+            },
+        )
+
+    @patch("apps.core.views.connection.cursor")
+    def test_readiness_hides_database_error(self, cursor):
+        sensitive_message = "simulated-sensitive-database-detail"
+        cursor.side_effect = DatabaseError(sensitive_message)
+
+        response = self.client.get(reverse("core:readiness"))
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(
+            response.json(),
+            {
+                "status": "unavailable",
+                "service": "django-platform",
+                "database": "unavailable",
+            },
+        )
+        self.assertNotContains(response, sensitive_message, status_code=503)
 
 
 class SecretKeyConfigurationTests(SimpleTestCase):

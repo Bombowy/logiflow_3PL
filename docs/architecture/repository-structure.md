@@ -19,7 +19,7 @@ docs/
   adr/                 Architecture Decision Records
   architecture/        dokumentacja architektury
   setup/               instrukcje środowiskowe
-scripts/               przenośna automatyzacja PowerShell
+scripts/               przenośna automatyzacja Bash i PowerShell
 ```
 
 ## Granice komponentów
@@ -32,4 +32,6 @@ Django Business Portal będzie server-rendered aplikacją dla pracowników i bę
 
 Planowany ETL prowadzi z SQL Server lub zewnętrznego WMS przez proces Python/Django Worker do PostgreSQL. Planowana komunikacja z .NET do workera będzie asynchroniczna. Obecnie połączenia te nie są zaimplementowane; działają wyłącznie szkielety oraz endpointy health.
 
-Katalogi infrastruktury są obecnie pustymi punktami rozszerzeń. Kontenery, bazy danych, kolejki i zasoby Azure nie są jeszcze skonfigurowane.
+Plik `compose.yaml` w katalogu głównym uruchamia wyłącznie PostgreSQL jako główną bazę Django i SQL Server jako symulację zewnętrznego WMS/ERP. Obie bazy pozostają oddzielnymi granicami; nie dodano ETL ani komunikacji aplikacyjnej z SQL Server. Kolejki, proxy i zasoby Azure nie są skonfigurowane.
+
+Compose definiuje logiczne wolumeny `logiflow_postgres_data` i `logiflow_sqlserver_data`. Ich rzeczywiste nazwy Docker są prefiksowane nazwą projektu z `COMPOSE_PROJECT_NAME`, dzięki czemu granica lokalnego środowiska pozostaje jednoznaczna.

@@ -72,6 +72,27 @@ Filters reduce the risk of exposing sensitive data, but always inspect the expor
 
 ## Walidacja Python / Python validation
 
+W WSL uruchom `./scripts/test-python.sh`. Skrypt wymusza pusty `DATABASE_URL`, aby system check, pytest i Ruff działały szybko i izolowanie na SQLite.
+In WSL run `./scripts/test-python.sh`. It forces an empty `DATABASE_URL` so the system check, pytest, and Ruff run quickly and independently on SQLite.
+
+Walidację .NET w WSL wykonuje `./scripts/test-dotnet.sh`: restore, build z ostrzeżeniami traktowanymi jak błędy, testy i audyt podatności NuGet.
+Use `./scripts/test-dotnet.sh` for .NET validation in WSL: restore, build with warnings as errors, tests, and a NuGet vulnerability audit.
+
+## Infrastruktura lokalna / Local infrastructure
+
+Skrypty wymagają lokalnego `.env.docker` utworzonego na podstawie `.env.docker.example` i działają niezależnie od bieżącego katalogu:
+The scripts require a local `.env.docker` created from `.env.docker.example` and work independently of the current directory:
+
+```bash
+./scripts/infrastructure-up.sh
+./scripts/infrastructure-status.sh
+./scripts/test-infrastructure.sh
+./scripts/infrastructure-down.sh
+```
+
+Każdy skrypt sprawdza Linux Docker CLI, Engine, `.env.docker` i `compose.yaml`. `infrastructure-up.sh` uruchamia bazy i czeka do pięciu minut na `healthy`. `test-infrastructure.sh` testuje obie bazy i połączenie Django z PostgreSQL. `infrastructure-down.sh` zatrzymuje usługi bez usuwania named volumes.
+Each script checks the Linux Docker CLI, Engine, `.env.docker`, and `compose.yaml`. `infrastructure-up.sh` starts the databases and waits up to five minutes for `healthy`. `test-infrastructure.sh` tests both databases and Django's PostgreSQL connection. `infrastructure-down.sh` stops services without deleting named volumes.
+
 Skrypt `test-python.ps1` uruchamia pełną walidację części Python: Django system check, kompletny zestaw testów pytest oraz Ruff. Przerywa pracę po pierwszym błędzie.
 The `test-python.ps1` script runs the complete Python validation suite: Django system check, all pytest tests, and Ruff. It stops after the first failure.
 

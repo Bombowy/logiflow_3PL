@@ -12,3 +12,5 @@
 10. Niestandardowe komentarze w skryptach zapisuj po polsku i angielsku.
 11. Aktualizuj dokumentację przy każdej zmianie granic lub decyzji architektonicznej.
 12. Gdy polecenie użytkownika wymaga raportu do przeglądu, agent zapisuje pełny raport jako `raport_z_polecenia.txt`, następnie uruchamia `./scripts/publish-review-artifacts.sh` i dopiero potem pokazuje krótkie podsumowanie w panelu Codexa. Nie uruchamiaj publikacji w zadaniach, które wyraźnie zabraniają dostępu do `/mnt/f` albo nie wymagają raportu.
+13. Backend rozwijaj i waliduj Linux-first w klonie WSL pod `/home`; klony Windows i WSL synchronizuj przez Git, bez współdzielenia środowisk `.venv`.
+14. Do lokalnych baz używaj Engine Docker Desktop udostępnionego przez WSL 2; nie instaluj drugiego Docker Engine w Ubuntu.

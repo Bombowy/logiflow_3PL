@@ -46,6 +46,8 @@ android/key.properties
 .env
 .env.*
 !.env.example
+!.env.docker.example
+.env.docker
 *.pem
 *.pfx
 *.key
