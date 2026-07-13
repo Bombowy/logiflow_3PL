@@ -11,3 +11,4 @@
 9. Komentuj tylko kod wymagający wyjaśnienia; preferuj kod wyrażający intencję.
 10. Niestandardowe komentarze w skryptach zapisuj po polsku i angielsku.
 11. Aktualizuj dokumentację przy każdej zmianie granic lub decyzji architektonicznej.
+12. Gdy polecenie użytkownika wymaga raportu do przeglądu, agent zapisuje pełny raport jako `raport_z_polecenia.txt`, następnie uruchamia `./scripts/publish-review-artifacts.sh` i dopiero potem pokazuje krótkie podsumowanie w panelu Codexa. Nie uruchamiaj publikacji w zadaniach, które wyraźnie zabraniają dostępu do `/mnt/f` albo nie wymagają raportu.

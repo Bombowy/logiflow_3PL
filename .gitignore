@@ -59,7 +59,9 @@ tools/
 tmp/
 temp/
 /logiflow-code.txt
+/raport_z_polecenia.txt
 /logiflow.txt
+/pliki_z_linuksa/
 /artifacts/local/
 infrastructure/postgres/data/
 infrastructure/sqlserver/data/

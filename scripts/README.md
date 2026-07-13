@@ -1,7 +1,7 @@
 # Skrypty / Scripts
 
-Ten katalog jest przeznaczony na przenośne skrypty PowerShell automatyzujące pracę lokalną.
-This directory is reserved for portable PowerShell scripts supporting local development.
+Ten katalog zawiera przenośne skrypty Bash i PowerShell automatyzujące pracę lokalną.
+This directory contains portable Bash and PowerShell scripts supporting local development.
 
 ## Eksport kodu / Code export
 
@@ -27,6 +27,48 @@ The script respects `.gitignore` and skips common secret files and binary format
 
 Przed udostępnieniem zawsze ręcznie sprawdź wygenerowany plik pod kątem danych wrażliwych.
 Always review the generated file manually for sensitive data before sharing it.
+
+## Eksport kodu w Linux/WSL / Linux/WSL code export
+
+Skrypt `export-code-to-txt.sh` jest linuxowym odpowiednikiem eksportu PowerShell. Zbiera śledzone oraz nieignorowane pliki nieśledzone, filtruje pliki binarne i typowe dane wrażliwe, a wynik zapisuje domyślnie jako `logiflow-code.txt` w katalogu głównym repozytorium.
+The `export-code-to-txt.sh` script is the Linux equivalent of the PowerShell export. It collects tracked and non-ignored untracked files, filters binary files and common sensitive data, and writes `logiflow-code.txt` in the repository root by default.
+
+```bash
+./scripts/export-code-to-txt.sh
+./scripts/export-code-to-txt.sh --output artifacts/local/code-review.txt
+```
+
+Ścieżka względna przekazana przez `--output` jest liczona od katalogu głównego repozytorium. Skrypt można uruchomić z dowolnego katalogu.
+A relative path passed with `--output` is resolved from the repository root. The script can be run from any directory.
+
+Test regresyjny uruchamia eksport dwukrotnie i sprawdza stabilność liczby sekcji, pojedynczy nagłówek oraz brak plików wynikowych i tymczasowych w eksporcie:
+The regression test runs the export twice and verifies a stable section count, a single header, and the absence of output and temporary files in the export:
+
+```bash
+./scripts/test-review-artifacts.sh
+```
+
+## Publikowanie artefaktów do Windows / Publishing artifacts to Windows
+
+Przed publikacją utwórz niepusty plik `raport_z_polecenia.txt` w katalogu głównym repozytorium. Następnie uruchom:
+Create a non-empty `raport_z_polecenia.txt` in the repository root before publishing. Then run:
+
+```bash
+./scripts/publish-review-artifacts.sh
+```
+
+Skrypt ponownie generuje eksport kodu i kopiuje oba pliki do `/mnt/f/Projekty/LogiFlow_3PL/pliki_z_linuksa`. Docelowy katalog można zmienić zmienną `LOGIFLOW_WINDOWS_EXPORT_DIR`:
+The script regenerates the code export and copies both files to `/mnt/f/Projekty/LogiFlow_3PL/pliki_z_linuksa`. Override the destination with `LOGIFLOW_WINDOWS_EXPORT_DIR`:
+
+```bash
+LOGIFLOW_WINDOWS_EXPORT_DIR=/mnt/f/inny-katalog ./scripts/publish-review-artifacts.sh
+```
+
+Starsze pliki są zastępowane atomowo, a zgodność źródła i celu jest sprawdzana sumą SHA-256.
+Older files are atomically replaced, and source-to-destination equality is verified with SHA-256.
+
+Filtry ograniczają ryzyko ujawnienia danych wrażliwych, ale przed publicznym udostępnieniem zawsze ręcznie sprawdź eksport.
+Filters reduce the risk of exposing sensitive data, but always inspect the export manually before sharing it publicly.
 
 ## Walidacja Python / Python validation
 
